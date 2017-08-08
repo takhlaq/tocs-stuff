@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tocs-audio-toggle-dll", "tocs-audio-toggle-dll\tocs-audio-toggle-dll.vcxproj", "{19C3FBFF-F1E2-49E1-962E-CE56DF79B789}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tocs-injector-dll", "tocs-injector-dll\tocs-injector-dll.vcxproj", "{19C3FBFF-F1E2-49E1-962E-CE56DF79B789}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tocs-audio-injector", "tocs-audio-injector\tocs-audio-injector.vcxproj", "{C5E677CF-D6C3-464A-9C7C-2D882D5F64A1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tocs-injector", "tocs-injector\tocs-injector.vcxproj", "{C5E677CF-D6C3-464A-9C7C-2D882D5F64A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
