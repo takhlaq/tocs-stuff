@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <regex>
 
 struct item_entry
 {
@@ -43,6 +44,7 @@ void replaceStr(std::string& in, const std::string& find, const std::string& rep
 
 int main(int argc, char* argv[])
 {
+   std::regex alphaNumeric("[a-zA-Z]|[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|[\u203B]");
    if (argc > 1)
    {
       std::string filePath(argv[1]);
@@ -86,10 +88,10 @@ int main(int argc, char* argv[])
                uint8_t ignoreJump = 0;
                // this is incredibly retarded but seems to work so whatever
                {
-                  if (static_cast<uint8_t>(entry.wat[0]) != 0xFD)
+                  //if (static_cast<uint8_t>(entry.wat[0]) != 0xFD)
                   {
                      if (static_cast<uint8_t>(entry.wat[1]) != 0xFF)
-                        ignoreJump = offset = (offset - 56) + static_cast<uint8_t>(entry.wat[2]) + 2;
+                        ignoreJump = offset = (offset - 56) + static_cast<uint8_t>(entry.wat[2]) + 1;
                   }
                }
 
@@ -103,11 +105,12 @@ int main(int argc, char* argv[])
                {
                   entry.name = std::string(buf.data() + i + offset);
 
-                  if (entry.name.size() < 5)
-                     entry.name = std::string(buf.data() + i + (offset = ignoreJump));
+                  while (entry.name.size() < 4 || entry.name == "item" || (!std::regex_match(entry.name.substr(0, 1), alphaNumeric) && ignoreJump < skipBytes))
+                     entry.name = std::string(buf.data() + i + (offset = ignoreJump++));
                }
                offset += entry.name.size() + 1;
                entry.description = std::string(buf.data() + i + offset);
+               entry.description = entry.description.size() > 4 ? entry.description : "";
                offset += entry.description.size();
                
                for (auto it = entry.description.begin(); it != entry.description.end(); ++it)
@@ -123,8 +126,8 @@ int main(int argc, char* argv[])
                ss << "0x" << std::setw(4) << std::setfill('0') << std::uppercase << std::hex << entry.itemid;
 
                std::string outStr(ss.str() + ", " + entry.name + ", " + entry.description + "\r\n");
-               std::cout << "filePos " << std::to_string(i) << " skipBytes " << std::to_string(skipBytes) << " offset " << std::to_string(offset) << std::endl;
-               std::cout << outStr << std::endl;
+               //std::cout << "filePos " << std::to_string(i) << " skipBytes " << std::to_string(skipBytes) << " offset " << std::to_string(offset) << std::endl;
+               //std::cout << outStr << std::endl;
                outCsv.write( outStr.c_str(), outStr.size());
             }
          }
