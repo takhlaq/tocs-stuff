@@ -1,0 +1,38 @@
+//--------------------------------------
+//--- 010 Editor v6.0.2 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+
+struct TableHeader
+{
+  string type;
+  uint16 dataSize;
+  uint16 padding;
+};
+
+struct NameTableEntry
+{
+  TableHeader header;
+  string name;
+  string model;
+  string model2;
+  string modelId;
+  string model4;
+  string model5;
+  unsigned char bytes[header.dataSize - 
+  sizeof(name) - sizeof(model) - 
+  sizeof(model2) - sizeof(modelId) -
+  sizeof(model4) - sizeof(model5) - 2]
+<optimize=false>;
+};
+
+struct NameTable
+{
+  uint16 numEntries;
+  NameTableEntry entries[numEntries]
+<optimize=false>;
+} data;

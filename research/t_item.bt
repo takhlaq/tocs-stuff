@@ -1,0 +1,37 @@
+//--------------------------------------
+//--- 010 Editor v6.0.2 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+struct TableHeader
+{
+  string type;
+  uint16 dataSize;
+};
+
+struct ItemHeader
+{
+  string dataType;
+  uint16 unknown;
+  uint16 unknown2;
+  uint16 unknown3[21] <optimize=false>;
+};
+
+struct ItemEntry
+{
+  TableHeader header;
+  uint16 itemid;
+  uint16 padding;
+  ItemHeader header;
+  string name;
+  string description;
+};
+
+struct ItemTable
+{
+  uint16 count;
+  ItemEntry entries[count] <optimize = false>;
+} data;
