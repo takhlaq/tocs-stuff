@@ -1,9 +1,10 @@
 #include <cstdint>
 #include <string>
-#include <string>
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 struct item_entry
 {
@@ -22,6 +23,14 @@ struct table_struct
    std::vector<item_entry> entries;
 };
 
+// https://stackoverflow.com/a/3824338
+template <class T>
+void endswap(T *objp)
+{
+   unsigned char *memp = reinterpret_cast<unsigned char*>(objp);
+   std::reverse(memp, memp + sizeof(T));
+}
+
 void replaceStr(std::string& in, const std::string& find, const std::string& replace)
 {
    auto pos = 0;
@@ -31,7 +40,6 @@ void replaceStr(std::string& in, const std::string& find, const std::string& rep
       pos += replace.length();
    }
 }
-
 
 int main(int argc, char* argv[])
 {
@@ -69,17 +77,35 @@ int main(int argc, char* argv[])
                offset = 5;
                skipBytes += *reinterpret_cast<uint8_t*>(buf.data() + i + offset);
                offset += 2;
+               //endswap(reinterpret_cast<uint16_t*>(buf.data() + i + offset));
                entry.itemid = *reinterpret_cast<uint16_t*>(buf.data() + i + offset);
                offset += 2;
                memcpy(&entry.wat[0], buf.data() + i + offset, sizeof(entry.wat));
                offset += 56;
+
+               uint8_t ignoreJump = 0;
+               // this is incredibly retarded but seems to work so whatever
+               {
+                  if (static_cast<uint8_t>(entry.wat[0]) != 0xFD)
+                  {
+                     if (static_cast<uint8_t>(entry.wat[1]) != 0xFF)
+                        ignoreJump = offset = (offset - 56) + static_cast<uint8_t>(entry.wat[2]) + 2;
+                  }
+               }
 
                while (*reinterpret_cast<uint8_t*>(buf.data() + i + offset) == 0xFF)
                   offset++;
                while (*reinterpret_cast<uint8_t*>(buf.data() + i + offset - 1) != 0xFF)
                   offset--;
 
-               entry.name = std::string(buf.data() + i + offset);
+
+               // this is incredibly retarded but seems to work so whatever
+               {
+                  entry.name = std::string(buf.data() + i + offset);
+
+                  if (entry.name.size() < 5)
+                     entry.name = std::string(buf.data() + i + (offset = ignoreJump));
+               }
                offset += entry.name.size() + 1;
                entry.description = std::string(buf.data() + i + offset);
                offset += entry.description.size();
@@ -93,7 +119,10 @@ int main(int argc, char* argv[])
                replaceStr(entry.description, ",", "--");
                replaceStr(entry.name, ",", "--");
 
-               std::string outStr(std::to_string(entry.itemid) + ", " + entry.name + ", " + entry.description + "\r\n");
+               std::stringstream ss;
+               ss << "0x" << std::setw(4) << std::setfill('0') << std::uppercase << std::hex << entry.itemid;
+
+               std::string outStr(ss.str() + ", " + entry.name + ", " + entry.description + "\r\n");
                std::cout << "filePos " << std::to_string(i) << " skipBytes " << std::to_string(skipBytes) << " offset " << std::to_string(offset) << std::endl;
                std::cout << outStr << std::endl;
                outCsv.write( outStr.c_str(), outStr.size());
@@ -103,6 +132,6 @@ int main(int argc, char* argv[])
    }
    else
    {
-      std::cout << "usage: itepath/to/data/text/dat_us/t_item.tbl";
+      std::cout << "usage: path/to/data/text/dat_us/t_item.tbl";
    }
 }
