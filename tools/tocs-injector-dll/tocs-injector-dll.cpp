@@ -6,9 +6,10 @@
 #include <fstream>
 #include <regex>
 
-#include "../minhook/MinHook.h"
+#include "../../libs/minhook/MinHook.h"
 
 #pragma comment(lib, "kernel32.lib")
+#pragma comment(lib, "Shlwapi.lib")
 
 HANDLE(WINAPI* pCreateFile)
 (LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,

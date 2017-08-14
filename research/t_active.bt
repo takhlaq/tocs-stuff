@@ -14,20 +14,18 @@ struct TableHeader
   uint16 internalId;
 };
 
-struct NameTableEntry
+struct ActiveTableEntry
 {
   TableHeader header;
-  string name;
-  string cutsceneModel;
-  string idlePose;
-  string characterOverworldId;
-  string face;
-  string model5;
+  string textureFile;
+  uint32 unknown;
+  string text;
+  uint32 unknown2[5];
 };
 
-struct NameTable
+struct ActiveTable
 {
   uint16 numEntries;
-  NameTableEntry entries[numEntries]
+  ActiveTableEntry entries[numEntries]
 <optimize=false>;
 } data;

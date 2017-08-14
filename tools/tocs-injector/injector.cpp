@@ -12,6 +12,8 @@
 #include <fstream>
 #include <string>
 
+#pragma comment(lib, "Shlwapi.lib")
+
 bool enabled = false;
 BOOL bProcess = false;
 HANDLE hProcess = nullptr;
@@ -56,7 +58,7 @@ int main()
 find:
    injectDll("\\\\tocs-injector-dll.dll");
    while (true)
-   {     
+   {
       if (!hProcess && !unhook)
       {
          std::cout << "[error] unable to find Trails of Cold Steel process, checking again in 10 seconds..." << std::endl;
@@ -92,7 +94,10 @@ find:
             << std::endl << "[info] i dont care to add gui atm so toggle here instead"
             << std::endl;
          else if (line.size() == 0 || line == "t")
+         {
             enabled = !enabled;
+            goto find;
+         }
          else if (line == "unhook")
          {
             unhook = !unhook;

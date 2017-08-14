@@ -11,6 +11,7 @@ struct TableHeader
 {
    std::string type;
    uint16_t dataSize;
+   uint16_t internalId;
 };
 
 struct ItemHeader
@@ -22,7 +23,6 @@ struct ItemHeader
 struct ItemEntry
 {
    TableHeader entryHeader;
-   uint16_t itemid;
    uint16_t padding;
    ItemHeader itemHeader;
    std::string name;
@@ -98,9 +98,9 @@ int main(int argc, char* argv[])
                std::stringstream ss;
                // itemid
                {
-                  memcpy(&entry.itemid, buf.data() + i + offset, 2);
+                  memcpy(&entry.entryHeader.internalId, buf.data() + i + offset, 2);
                   offset += 2;
-                  ss << "0x" << std::setw(4) << std::setfill('0') << std::uppercase << std::hex << entry.itemid;
+                  ss << "0x" << std::setw(4) << std::setfill('0') << std::uppercase << std::hex << entry.entryHeader.internalId;
                }
                // padding
                {
