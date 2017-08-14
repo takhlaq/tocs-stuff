@@ -11,23 +11,18 @@ struct TableHeader
 {
   string type;
   uint16 dataSize;
-  uint16 padding;
 };
 
 struct NameTableEntry
 {
   TableHeader header;
+  uint16 internalId;
   string name;
-  string model;
-  string model2;
-  string modelId;
-  string model4;
+  string cutsceneModel;
+  string idlePose;
+  string characterOverworldId;
+  string face;
   string model5;
-  unsigned char bytes[header.dataSize - 
-  sizeof(name) - sizeof(model) - 
-  sizeof(model2) - sizeof(modelId) -
-  sizeof(model4) - sizeof(model5) - 2]
-<optimize=false>;
 };
 
 struct NameTable
