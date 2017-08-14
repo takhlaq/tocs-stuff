@@ -10,6 +10,7 @@ struct TableHeader
 {
   string type;
   uint16 dataSize;
+  uint16 internalId;
 };
 
 struct ItemHeader
@@ -23,7 +24,6 @@ struct ItemHeader
 struct ItemEntry
 {
   TableHeader header;
-  uint16 itemid;
   uint16 padding;
   ItemHeader header;
   string name;
