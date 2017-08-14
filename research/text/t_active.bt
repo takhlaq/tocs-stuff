@@ -7,25 +7,30 @@
 // Purpose:
 //--------------------------------------
 
-struct TableHeader
+struct TableEntryHeader
 {
   string type;
   uint16 dataSize;
   uint16 internalId;
 };
 
-struct ActiveTableEntry
+struct ActiveEntry
 {
-  TableHeader header;
   string textureFile;
   uint32 unknown;
   string text;
   uint32 unknown2[5];
 };
 
-struct ActiveTable
+struct TableEntry
+{
+  TableEntryHeader header;
+  ActiveEntry entry;
+};
+
+struct Table
 {
   uint16 numEntries;
-  ActiveTableEntry entries[numEntries]
+  TableEntry entries[numEntries]
 <optimize=false>;
 } data;

@@ -6,16 +6,15 @@
 // Revision:
 // Purpose:
 //--------------------------------------
-struct TableHeader
+struct TableEntryHeader
 {
   string type;
   uint16 dataSize;
   uint16 internalId;
 };
 
-struct ActiveTableEntry
+struct AttachEntry
 {
-  TableHeader header;
   uint32 unknown;
   uint16 itemId;
   uint16 unknown2[7];
@@ -23,9 +22,15 @@ struct ActiveTableEntry
   string attachPoint;
 };
 
-struct ActiveTable
+struct TableEntry
+{
+  TableEntryHeader header;
+  AttachEntry entry;
+};
+
+struct Table
 {
   uint16 numEntries;
-  ActiveTableEntry entries[numEntries]
+  TableEntry entries[numEntries]
 <optimize=false>;
 } data;

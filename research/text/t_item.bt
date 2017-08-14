@@ -6,32 +6,32 @@
 // Revision:
 // Purpose:
 //--------------------------------------
-struct TableHeader
+struct TableEntryHeader
 {
   string type;
   uint16 dataSize;
   uint16 internalId;
 };
 
-struct ItemHeader
+struct ItemEntry
 {
+  uint16 padding;
   string dataType;
   uint16 unknown;
   uint16 unknown2;
   uint16 unknown3[21] <optimize=false>;
-};
-
-struct ItemEntry
-{
-  TableHeader header;
-  uint16 padding;
-  ItemHeader header;
   string name;
   string description;
 };
 
-struct ItemTable
+struct TableEntry
+{
+  TableEntryHeader header;
+  ItemEntry entry;
+};
+
+struct Table
 {
   uint16 count;
-  ItemEntry entries[count] <optimize = false>;
+  TableEntry entries[count] <optimize = false>;
 } data;
