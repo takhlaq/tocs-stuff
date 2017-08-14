@@ -7,16 +7,15 @@
 // Purpose:
 //--------------------------------------
 
-struct TableHeader
+struct TableEntryHeader
 {
   string type;
   uint16 dataSize;
   uint16 internalId;
 };
 
-struct NameTableEntry
+struct NameEntry
 {
-  TableHeader header;
   string name;
   string cutsceneModel;
   string idlePose;
@@ -25,9 +24,15 @@ struct NameTableEntry
   string model5;
 };
 
+struct TableEntry
+{
+  TableEntryHeader header;
+  NameEntry entry;
+};
+
 struct NameTable
 {
   uint16 numEntries;
-  NameTableEntry entries[numEntries]
+  TableEntry entries[numEntries]
 <optimize=false>;
 } data;
