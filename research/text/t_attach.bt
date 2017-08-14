@@ -1,0 +1,31 @@
+//--------------------------------------
+//--- 010 Editor v6.0.2 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+struct TableHeader
+{
+  string type;
+  uint16 dataSize;
+  uint16 internalId;
+};
+
+struct ActiveTableEntry
+{
+  TableHeader header;
+  uint32 unknown;
+  uint16 itemId;
+  uint16 unknown2[7];
+  string model;
+  string attachPoint;
+};
+
+struct ActiveTable
+{
+  uint16 numEntries;
+  ActiveTableEntry entries[numEntries]
+<optimize=false>;
+} data;
