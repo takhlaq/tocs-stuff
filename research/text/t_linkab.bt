@@ -11,23 +11,31 @@ struct TableEntryHeader
 {
   string type;
   uint16 dataSize;
-  uint16 internalId;
 };
 
-struct NameEntry
+struct LinkAbListEntry
 {
+  uint16 playerId;
+  uint16 linkLevel;
+  char unknown;
   string name;
-  string cutsceneModel;
-  string idlePose;
-  string characterOverworldId;
-  string face;
-  string model5;
+  string description;
+};
+
+struct LinkLevelExpEntry
+{
+  char level;
+  uint16 exp;
+  uint16 unknown;
 };
 
 struct TableEntry
 {
   TableEntryHeader header;
-  NameEntry entry;
+  if (header.type == "LinkAbList")
+    LinkAbListEntry entry;
+  else
+    LinkLevelExpEntry entry;
 };
 
 struct Table

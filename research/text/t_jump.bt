@@ -14,20 +14,21 @@ struct TableEntryHeader
   uint16 internalId;
 };
 
-struct NameEntry
+struct JumpEntry
 {
+  uint16 unknown;
   string name;
-  string cutsceneModel;
-  string idlePose;
-  string characterOverworldId;
-  string face;
-  string model5;
+  uint32 unknown2;
+  string mapId;
+  string map2Id;
 };
 
 struct TableEntry
 {
   TableEntryHeader header;
-  NameEntry entry;
+  JumpEntry entry;
+  char unknown[header.dataSize - sizeof(entry.unknown) -
+  sizeof(entry.name) - sizeof(entry.unknown2) - sizeof(entry.mapId) - sizeof(entry.map2Id) - 2];
 };
 
 struct Table

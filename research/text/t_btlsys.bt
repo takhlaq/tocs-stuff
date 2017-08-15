@@ -14,20 +14,29 @@ struct TableEntryHeader
   uint16 internalId;
 };
 
-struct NameEntry
+struct BtlSysEntry
 {
   string name;
-  string cutsceneModel;
-  string idlePose;
-  string characterOverworldId;
-  string face;
-  string model5;
+  uint16 unknown[3];
+};
+
+struct AtBonusEntry
+{
+
 };
 
 struct TableEntry
 {
   TableEntryHeader header;
-  NameEntry entry;
+  if (header.type == "AtBonus")
+  {
+    AtBonusEntry entry;
+    char unknown[header.dataSize - 2];
+  }
+   else
+  {
+     BtlSysEntry entry;
+  }
 };
 
 struct Table

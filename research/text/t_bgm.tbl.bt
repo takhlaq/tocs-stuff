@@ -14,20 +14,16 @@ struct TableEntryHeader
   uint16 internalId;
 };
 
-struct NameEntry
+struct BgmEntry
 {
   string name;
-  string cutsceneModel;
-  string idlePose;
-  string characterOverworldId;
-  string face;
-  string model5;
+  uint16 loop; // 0 - no loop, 1 - loop forever
 };
 
 struct TableEntry
 {
   TableEntryHeader header;
-  NameEntry entry;
+  BgmEntry entry;
 };
 
 struct Table
