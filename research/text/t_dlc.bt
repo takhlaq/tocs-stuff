@@ -14,20 +14,18 @@ struct TableEntryHeader
   uint16 internalId;
 };
 
-struct NameEntry
+struct DlcEntry
 {
+  string contentId;
+  string type;
   string name;
-  string cutsceneModel;
-  string idlePose;
-  string characterOverworldId;
-  string face;
-  string model5;
+  string description;
 };
 
 struct TableEntry
 {
   TableEntryHeader header;
-  NameEntry entry;
+  DlcEntry entry;
 };
 
 struct Table

@@ -11,23 +11,18 @@ struct TableEntryHeader
 {
   string type;
   uint16 dataSize;
-  uint16 internalId;
 };
 
-struct NameEntry
+struct FootstepEntry
 {
-  string name;
-  string cutsceneModel;
-  string idlePose;
-  string characterOverworldId;
-  string face;
-  string model5;
+  string file;
+  char unknown;
 };
 
 struct TableEntry
 {
   TableEntryHeader header;
-  NameEntry entry;
+  FootstepEntry entry;
 };
 
 struct Table
