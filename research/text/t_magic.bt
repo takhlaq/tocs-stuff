@@ -1,0 +1,45 @@
+//--------------------------------------
+//--- 010 Editor v6.0.2 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+
+struct TableEntryHeader
+{
+  string type;
+  uint16 dataSize;
+  uint16 internalId;
+};
+
+struct AniSubHeader
+{
+  uint16 padding;
+  string dataType;
+  uint16 unknown[11];
+};
+
+struct AniBtlEntry
+{
+  // possibly linking to icons?
+  AniSubHeader subHeader;
+  uint16 commandId;
+  string animationId;
+  string name;
+  string description;
+};
+
+struct TableEntry
+{
+  TableEntryHeader header;
+  AniBtlEntry entry;
+};
+
+struct Table
+{
+  uint16 numEntries;
+  TableEntry entries[numEntries]
+<optimize=false>;
+} data;
