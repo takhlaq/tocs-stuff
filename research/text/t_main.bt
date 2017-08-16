@@ -11,16 +11,17 @@ struct TableEntryHeader
 {
   string type;
   uint16 dataSize;
-  uint16 internalId;
 };
 
 struct QSChapterEntry
 {
-  string title;
+  uint16 internalId;
+  string name;
 };
 
 struct QSTitleEntry
 {
+  uint16 titleId;
   char unknown;
   string title;
   string contents;
@@ -28,7 +29,7 @@ struct QSTitleEntry
 
 struct QSTextEntry
 {
-  //TableEntryHeader header;
+  uint16 titleId;
   char index;
   string text;
   char unknown2;
@@ -44,7 +45,7 @@ struct TableEntry
   else if (header.type == "QSTitle")
   {
     QSTitleEntry entry;
-    char unknown[header.dataSize - sizeof(entry) - 2];
+    char unknown[header.dataSize - sizeof(entry)];
   }
   else if (header.type == "QSText")
   {
