@@ -1,0 +1,60 @@
+//--------------------------------------
+//--- 010 Editor v6.0.2 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+
+struct TableEntryHeader
+{
+  string type;
+  uint16 dataSize;
+  uint16 internalId;
+};
+
+struct QSChapterEntry
+{
+  string title;
+};
+
+struct QSTitleEntry
+{
+  char unknown;
+  string title;
+  string contents;
+};
+
+struct QSTextEntry
+{
+  //TableEntryHeader header;
+  char index;
+  string text;
+  char unknown2;
+};
+
+struct TableEntry
+{
+  TableEntryHeader header;
+  if (header.type == "QSChapter")
+  {
+    QSChapterEntry entry;
+  }
+  else if (header.type == "QSTitle")
+  {
+    QSTitleEntry entry;
+    char unknown[header.dataSize - sizeof(entry) - 2];
+  }
+  else if (header.type == "QSText")
+  {
+    QSTextEntry textEntry;
+  }
+};
+
+struct Table
+{
+  uint16 numEntries;
+  TableEntry entries[numEntries]
+<optimize=false>;
+} data;
