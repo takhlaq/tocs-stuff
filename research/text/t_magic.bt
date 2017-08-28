@@ -7,39 +7,40 @@
 // Purpose:
 //--------------------------------------
 
-struct TableEntryHeader
+struct TABLEENTRYHEADER
 {
-  string type;
-  uint16 dataSize;
-  uint16 internalId;
+  SetBackColor(0x0000a0);
+  string Entry_Type;
+  uint16 Data_Size;
+  uint16 Unique_ID;
+  uint16 Padding;
 };
 
-struct AniSubHeader
+struct MAGICENTRY
 {
-  uint16 padding;
-  string dataType;
-  uint16 unknown[11];
+  SetBackColor(0x00a000);
+  string Magic_Target_Flags;
+  uint16 Unknown_Flags[11];  
+
+  SetBackColor(0xa00000);
+  uint16 Magic_Group_Order_ID;
+  string Animation_Name_ID;
+  string Magic_Name;
+  string Magic_Description;
 };
 
-struct AniBtlEntry
+struct TABLEENTRY
 {
-  // possibly linking to icons?
-  AniSubHeader subHeader;
-  uint16 commandId;
-  string animationId;
-  string name;
-  string description;
+  TABLEENTRYHEADER Entry_Header;
+  MAGICENTRY Entry_Data;
 };
 
-struct TableEntry
+struct HEADER
 {
-  TableEntryHeader header;
-  AniBtlEntry entry;
+  uint16 Entry_Count;
 };
 
-struct Table
-{
-  uint16 numEntries;
-  TableEntry entries[numEntries]
-<optimize=false>;
-} data;
+
+// Lay out the data
+SetBackColor(0x000000); HEADER Magic_Table_Header;
+TABLEENTRY Magic_Table_Entries[Magic_Table_Header.Entry_Count] <optimize=false>;
