@@ -13,14 +13,187 @@ struct TABLEENTRYHEADER
   string Entry_Type;
   uint16 Data_Size;
   uint16 Unique_ID;
-  uint16 Padding;
+  uint16 Unknown;
+};
+
+struct MAGIC_1ST_FLAGS
+{
+    /* Byte Bitfield */ // Certain flag combinations are incompatible and will result in broken art/craft
+    byte Magic_Type_Flag_Attack : 1; // Marks the "magic" as a regular attack.
+    byte Magic_Type_Flag_Unknown0 : 1;
+    byte Magic_Type_Flag_Unknown1 : 1;
+    byte Magic_Type_Flag_Is_A_Craft : 1; // Uses Art Cast Animation & EP instead of CP
+    byte Magic_Type_Flag_Unknown3 : 1;
+    byte Magic_Type_Flag_Unknown4 : 1;
+    byte Magic_Type_Flag_Unknown5 : 1;
+    byte Magic_Type_Flag_Unknown6 : 1; // Sometimes gives yellow aura for casts (Probably food related)
+    /* End Byte Bitfield */    
+};
+
+struct MAGIC_AREA_FLAGS
+{
+    /* Byte Bitfield */ // Certain flag combinations are incompatible and will result in broken art/craft
+    byte Magic_Area_Flag_Select_Character: 1; // Selects one singular character
+    byte Magic_Area_Flag_Area_Is_Circle : 1; // Circle Area, Targets Character. Combine with Select_Character for Line
+    byte Magic_Type_Flag_Unknown1 : 1;
+    byte Magic_Type_Flag_Free_Movement : 1; // Allows for free rotation of Line without character snapping.
+    byte Magic_Type_Flag_Unknown3 : 1;
+    byte Magic_Type_Flag_Moving_Circle_Area : 1;
+    byte Magic_Type_Flag_Unknown5 : 1;
+    byte Magic_Type_Flag_Unknown6 : 1; 
+    /* End Byte Bitfield */    
+};
+
+struct STATUS_EFFECT_II_FLAGS
+{
+    /* Byte Bitfield */
+    byte Magic_Type_Flag_Category_Entry : 4;  
+
+    byte Magic_Type_Flag_Category : 4;
+    /*
+        List of Lists:
+        0x0: Attack List
+        0x1: Status Effect
+        0x2: Debuffs
+    */
+
+    /* 
+        Unknown List! (0x0)
+        0x0: Nothing
+        0x1: Deal Damage (STR?)
+
+        // The three below are probably distinguished as arts, orbal staff and regular damage.
+        0x2: Deal Damage | Random Status? Param 1: Damage (STR?)
+        0x3: Deal Damage | Random Status? Param 1: Damage (ATS?) Param 2: Damage (ATS?)
+        0x4: Deal Damage | Random Status | Screen Shake Param 1: Damage (ATS?) Param 2: Damage (ATS?)
+        0x5: Deal Damage (It deals plenty)
+        0x6: Deal Damage | Deals same amount of damage as player's HP, 100% kill rate.
+    */
+
+    /*
+        Status Effect List! (0x1) (Parameter 1: Chance) (Parameter 2: Delay/Duration)
+        0x0: Freeze
+        0x1: Petrify
+        0x2: Faint
+        0x3: Confuse
+        0x4: Deathblow
+        0x5: Nightmare
+        0x6: AT-Delay 
+        0x7: Vanish
+        0x8: Break-Combat-Link
+        0xA: Balance Down (More likely to be unbalanced)
+    */
+
+    /*
+        Debuffs List! (0x2) (Parameter: Null) (Parameter 2: Delay/Duration)
+        0x0: ATS Down
+        0x1: ADF Down
+        0x2: SPD Down
+        0x3: MOV Down
+    */
+
+    /* Null List? (0x3) */
+
+    /*  Buffs List (0x4) 
+        
+        0x0: Null
+        0x1: STR UP
+        0x2: DEF UP
+        0x3: ATS UP
+        0x4: ADF UP
+        0x5: SPD UP
+        0x6: MOV UP
+        0x7: INSIGHT STATUS
+    */
+
+    /*  Combined Buffs List (0x5) Parameter 1: Percentage Chance
+        
+        0x0: STR + SPD UP
+        0x1: Null?
+        0x2: STR + DEF UP
+        0x3: POISON + PETRIFY
+        0x4: MUTE + FREEZE
+        0x5: SEAL + BURN
+        0x6: BLIND + SLEEP
+        0x7: SPD + MOV DOWN
+        0x8: STR + DEF DOWN
+        0x9: STR UP
+    */
+
+    /*  Combined Buffs List (0x6) Parameter 1: Percentage Chance
+        
+        0x0: DEF + SPD UP
+        0x1: Null?
+        0x2: Null?
+        0x3: ADF + ATS UP
+        0x4: Heal Allies (HP) Fixed Amount: Parameter 1
+        0x5: Heal Allies (EP) Fixed Amount: Parameter 1
+        0x6: Heal Allies (CP)
+        0x7: SPD + MOV DOWN
+        0x8: STR + DEF DOWN
+        0x9: DEF + STR UP
+    */
+
+    /* End Byte Bitfield */    
+};
+
+struct MAGIC_PROPERTIES
+{
+    MAGIC_1ST_FLAGS Magic_Flags;
+
+    byte Magic_Category; // 1 = Is an Attack Art, 2/3/4 = Is an Support Art (Probably a leftover from the old Zero/Ao art menu categories).
+    
+    byte Unknown2;
+    MAGIC_AREA_FLAGS Magic_Area_Type; 
+
+    byte Magic_Line_Rotation_Unknown; // Enables rotation or movement, generally 100/0x64
+    byte Magic_Area_Effect_Size_Width; // Width of line, size of circle etc.
+    
+    STATUS_EFFECT_II_FLAGS Status_Effect_1; // Possible effects unknown
+    uint16 Status_Effect_1_Parameter_1; 
+    uint16 Status_Effect_1_Parameter_2; 
+    
+
+    STATUS_EFFECT_II_FLAGS Status_Effect_2; // Possible effects unknown
+    /*
+        Presets:
+        0x83: Noble Command 11000001 (Buff ATS + SPD)
+        0x66: Motivate, Serene Blessing 01100110 (CP Gain)
+        0x97: Crescent Shell 10010111  (Magic Reflect)
+        0x22: Sweep 00100010 (Debuff, SPD -25%)
+    */
+
+    uint16 Status_Effect_2_Parameter_1;
+
+    uint16 Status_Effect_2_Parameter_2;
+    byte Cast_Delay;
+    byte After_Cast_Delay;
+    uint16 EP_CP_Cost;
+    uint16 Unknown11;
 };
 
 struct MAGICENTRY
 {
   SetBackColor(0x00a000);
   string Magic_Target_Flags;
-  uint16 Unknown_Flags[11];  
+
+/* Magic_Target_Flags
+
+These combine, e.g. EM = All Enemies, PM = All Allies
+
+P = Player
+E = Enemy
+M = Targets All (Includes Self if Player Target)
+
+C = ?
+D = ?
+B = ?
+Q = ?
+R = ?
+I = ?
+
+*/
+  MAGIC_PROPERTIES Magic_Properties;  
 
   SetBackColor(0xa00000);
   uint16 Magic_Group_Order_ID;
