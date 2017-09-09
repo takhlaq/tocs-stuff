@@ -1,0 +1,18 @@
+Battle Entry Struct
+
+Length: 0x4 - Section Start - 01 00 00 00
+Length: 0x10 - String - Level Name
+
+Length: 0xC - Misc settings
+/* 
+	short Battle_ID; // Affects Positioning. Is a link to Scripts/Scena/dat/btl[xx]
+	short Battle_Type; // Something to do with the file.
+	short Unknown_1; // Value around 400
+	short Unknown_2; // Value around 400
+	int Null;
+*/
+
+Length: 0x08 - Enemy Section Start - 01 00 00 00 00 00 00 00
+Length: (0x10*8) - String - Enemy ID Entries (e.g. npc029)  
+Length: (0x01*16) - 0x64 - Setting to lower values can set enemies to not appear. (Could be to do with overworld chance of appearance. Recommend setting 0x64 for each monster on field.)
+Length: 0x1C - Unknown - Can be null
