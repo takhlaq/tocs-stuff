@@ -1,0 +1,42 @@
+//--------------------------------------
+//--- 010 Editor v6.0.2 Binary Template
+//
+// File:
+// Author:
+// Revision:
+// Purpose:
+//--------------------------------------
+
+struct TableEntryHeader
+{
+  string type;
+  uint16 dataSize;
+  uint16 Overworld_Item_Animation_Identifier;
+};
+
+struct NameEntry
+{
+  string name;
+  string cutsceneModel;
+  string idlePose;
+  string characterOverworldId;
+  string face;
+  string model5;
+  string unknown_name;
+  byte Dummy[17];
+};
+
+struct TableEntry
+{
+  TableEntryHeader header;
+  NameEntry entry;
+};
+
+struct Table
+{
+  BigEndian();
+  uint16 numEntries;
+  byte Dummy_Entry[22];
+  TableEntry entries[numEntries]
+<optimize=false>;
+} data;
