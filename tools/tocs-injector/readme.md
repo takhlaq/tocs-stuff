@@ -1,5 +1,9 @@
 jp/en audio toggle for Trails of Cold Steel PC
 
+video demonstration below
+
+[![video](https://img.youtube.com/vi/RhgXERh_DRs/0.jpg)](https://www.youtube.com/watch?v=RhgXERh_DRs)
+
 https://github.com/takhlaq/tocs-stuff
 **usage:**
 - buy the game https://store.steampowered.com/app/538680/The_Legend_of_Heroes_Trails_of_Cold_Steel/ (GOG version is untested but should work fine also)
